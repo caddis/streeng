@@ -1,0 +1,12 @@
+{
+	"schema_version": "1.0",
+	"name" : "streeng",
+	"label": "Streeng",
+	"version": "1.0.0",
+	"types": ["plugin"],
+	"paths": {
+		"system": [
+			"system/expressionengine/third_party/streeng"
+		]
+	}
+}
