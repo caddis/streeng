@@ -1,8 +1,8 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (! defined('BASEPATH')) exit('No direct script access allowed');
 
 $plugin_info = array (
 	'pi_name' => 'Streeng',
-	'pi_version' => '1.0.0',
+	'pi_version' => '1.0.1',
 	'pi_author' => 'Michael Leigeber',
 	'pi_author_url' => 'http://www.caddis.co',
 	'pi_description' => 'Perform common operations on strings.',
@@ -11,113 +11,146 @@ $plugin_info = array (
 
 class Streeng {
 
+	public $return_data = '';
+
 	public function __construct()
 	{
 		$this->EE =& get_instance();
-	}
 
-	public function capitalize()
-	{
-		return ucfirst($this->EE->TMPL->tagdata);
-	}
+		ee()->load->helper('string');
+		ee()->load->helper('text');
 
-	public function camel()
-	{
-		return ucwords(strtolower($this->EE->TMPL->tagdata));
-	}
+		// Set string to tagdata
 
-	public function upper()
-	{
-		return strtoupper($this->EE->TMPL->tagdata);
-	}
+		$string = $this->EE->TMPL->tagdata;
 
-	public function lower()
-	{
-		return strtolower($this->EE->TMPL->tagdata);
-	}
+		// Strip tags
 
-	public function strip()
-	{
 		$allowed = $this->EE->TMPL->fetch_param('allowed');
 
-		return ($allowed_tags) ? strip_tags($this->EE->TMPL->tagdata, $allowed) : strip_tags($this->EE->TMPL->tagdata);
-	}
+		if ($allowed)
+		{
+			$string = ($allowed == 'none') ? strip_tags($string) : strip_tags($string, $allowed);
+		}
 
-	public function truncate()
-	{
-		$tagdata = $this->EE->TMPL->tagdata;
+		// Replace
 
-		$limit = (int) $this->EE->TMPL->fetch_param('limit');
-		$append = $this->EE->TMPL->fetch_param('append', '');
-
-		return (strlen($tagdata) > $limit) ? substr($tagdata, 0, $limit) . $append : $tagdata;
-	}
-
-	public function replace()
-	{
 		$find = $this->EE->TMPL->fetch_param('find');
-		$replace = $this->EE->TMPL->fetch_param('replace');
 
-		return str_replace($find, $replace, $this->EE->TMPL->tagdata);
-	}
-
-	public function slug()
-	{
-		$separator = $this->EE->TMPL->fetch_param('separator', '-');
-
-		return preg_replace('/[^A-Za-z0-9-]+/', $separator, $this->EE->TMPL->tagdata);
-	}
-
-	public function length()
-	{
-		return strlen($this->EE->TMPL->tagdata);
-	}
-
-	public function encode()
-	{
-		return htmlentities($this->EE->TMPL->tagdata);
-	}
-
-	public function decode()
-	{
-		return html_entity_decode($this->EE->TMPL->tagdata);
-	}
-
-	public function trim()
-	{
-		$direction = $this->EE->TMPL->fetch_param('direction', 'both');
-
-		switch ($direction)
+		if ($find)
 		{
-			case 'both':
-				return trim($this->EE->TMPL->tagdata);
-			case 'left':
-				return ltrim($this->EE->TMPL->tagdata);
-				break;
-			default:
-				return rtrim($this->EE->TMPL->tagdata);
-				break;
-		}
-	}
+			$replace = $this->EE->TMPL->fetch_param('replace', '');
 
-	public function fixed()
-	{
-		$length = (int) $this->EE->TMPL->fetch_param('length', 100);
-		$character = $this->EE->TMPL->fetch_param('character', ' ');
-
-		switch ($this->EE->TMPL->fetch_param('direction', 'right'))
-		{
-			case 'right':
-				$type = STR_PAD_RIGHT;
-				break;
-			case 'left':
-				$type = STR_PAD_LEFT;
-				break;
-			default:
-				$type = STR_PAD_BOTH;
+			$string = str_replace($find, $replace, $string);
 		}
 
-		return str_pad($this->EE->TMPL->tagdata, $length, $character, $type);
+		// Trim white space
+
+		$trim = $this->EE->TMPL->fetch_param('trim', 'both');
+
+		if ($trim != 'no')
+		{
+			switch ($trim)
+			{
+				case 'both':
+					$string = trim($string);
+				case 'left':
+					$string = ltrim($string);
+				default:
+					$string = rtrim($string);
+			}
+		}
+
+		// HTML encode
+
+		$encode = $this->EE->TMPL->fetch_param('encode');
+
+		if ($encode == 'yes')
+		{
+			$string = htmlentities($string);
+		}
+
+		// HTML decode
+
+		$decode = $this->EE->TMPL->fetch_param('decode');
+
+		if ($decode == 'yes')
+		{
+			$string = html_entity_decode($string);
+		}
+
+		// Capitalize
+
+		$capitalize = $this->EE->TMPL->fetch_param('capitalize');
+
+		if ($capitalize == 'yes')
+		{
+			$string = ucfirst($string);
+		}
+
+		// Title case
+
+		$title = $this->EE->TMPL->fetch_param('title');
+
+		if ($title == 'yes')
+		{
+			$string = ucwords(strtolower($string));
+		}
+
+		// Lower case
+
+		$lower = $this->EE->TMPL->fetch_param('lower');
+
+		if ($lower == 'yes')
+		{
+			$string = strtolower($string);
+		}
+
+		// Upper case
+
+		$upper = $this->EE->TMPL->fetch_param('upper');
+
+		if ($upper == 'yes')
+		{
+			$string = strtoupper($string);
+		}
+
+		// Truncate
+
+		$characters = (int) $this->EE->TMPL->fetch_param('characters');
+		$words = (int) $this->EE->TMPL->fetch_param('words');
+		$append = $this->EE->TMPL->fetch_param('append', '&hellip;');
+
+		if ($words)
+		{
+			$string = word_limiter($string, $words, $append);
+		}
+		else if ($characters)
+		{
+			$string = character_limiter($string, $characters, $append);
+		}
+
+		// Slug
+
+		$slug = $this->EE->TMPL->fetch_param('slug');
+
+		if ($slug == 'yes')
+		{
+			$separator = $this->EE->TMPL->fetch_param('separator', '-');
+
+			$string = preg_replace('/[^A-Za-z0-9-]+/', $separator, $string);
+		}
+
+		// // Repeat
+
+		$repeat = (int) $this->EE->TMPL->fetch_param('repeat', 0);
+
+		if ($repeat > 0)
+		{
+			$string .= repeater($string, $repeat);
+		}
+
+		$this->return_data = $string;
 	}
 
 	function usage()
@@ -126,19 +159,7 @@ class Streeng {
 ?>
 Usage:
 
-{exp:streeng:capitalize}test string{/exp:streeng:capitalize} = Test string
-{exp:streeng:camel}test string{/exp:streeng:camel} = Test String
-{exp:streeng:lower}Test String{/exp:streeng:lower} = test string
-{exp:streeng:upper}Test String{/exp:streeng:upper} = TEST STRING
-{exp:streeng:slug}Test String{/exp:streeng:slug} = test-string
-{exp:streeng:truncate length="7" append="..."}Test String{/exp:streeng:truncate} = Test St...
-{exp:streeng:replace find="Test" append="New"}Test String{/exp:streeng:replace} = New String
-{exp:streeng:trim direction="left"}  Test String{/exp:streeng:trim} = Test String (direction - right|left|both)
-{exp:streeng:strip allow="<span><a>"}  <div><span><a href="#">Test String</a></span></div>{/exp:streeng:trim} = <span><a href="#">Test String</a></span>
-{exp:streeng:length}Test String{/exp:streeng:length} = 11
-{exp:streeng:encode}Test & String{/exp:streeng:encode} = Test &amp; String
-{exp:streeng:decode}Test &amp; String{/exp:streeng:decode} = Test & String
-{exp:streeng:fixed length="15" character="*" direction="right"}Test String{/exp:streeng:fixed} = Test String**** (direction - right|left|both)
+Coming soon
 <?php
 		$buffer = ob_get_contents();
 
