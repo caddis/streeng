@@ -17,8 +17,8 @@ class Streeng {
 	{
 		$this->EE =& get_instance();
 
-		ee()->load->helper('string');
-		ee()->load->helper('text');
+		$this->EE->load->helper('string');
+		$this->EE->load->helper('text');
 
 		// Set string to tagdata
 
