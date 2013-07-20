@@ -13,6 +13,16 @@ class Streeng {
 
 	public $return_data = '';
 
+	// Truthiness Check
+	private function _is_truthy($s)
+	{
+		switch(strtolower((string) $s))
+		{
+			case '': case '0': case 'n': case 'no': case 'off': case 'false': return FALSE;
+			default: return TRUE;
+		}
+	}
+
 	public function __construct()
 	{
 		$this->EE =& get_instance();
