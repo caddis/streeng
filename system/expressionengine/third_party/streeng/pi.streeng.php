@@ -34,6 +34,10 @@ class Streeng {
 
 		$string = $this->EE->TMPL->tagdata;
 
+		// Set case sensitivity
+
+		$insensitive = $this->_is_truthy($this->EE->TMPL->fetch_param('insensitive'));
+
 		// Strip tags
 
 		$allowed = $this->EE->TMPL->fetch_param('allowed');
@@ -43,15 +47,23 @@ class Streeng {
 			$string = ($allowed == 'none') ? strip_tags($string) : strip_tags($string, $allowed);
 		}
 
-		// Replace
+		// Find & Replace
 
 		$find = $this->EE->TMPL->fetch_param('find');
+		$replace = $this->EE->TMPL->fetch_param('replace');
 
-		if ($find)
+		if ($find && $replace !== FALSE)
 		{
-			$replace = $this->EE->TMPL->fetch_param('replace', '');
+			$fn = ($insensitive)? 'str_ireplace': 'str_replace';
+			$string = call_user_func_array($fn, array($find, $replace, $string));
+		}
 
-			$string = str_replace($find, $replace, $string);
+		// Find (No Replace)
+
+		if ($find && $replace === FALSE)
+		{
+			$fn = ($insensitive)? 'stripos': 'strpos';
+			$string = (call_user_func_array($fn, array($string, $find)) !== FALSE)? 1: 0;
 		}
 
 		// Trim white space
@@ -172,6 +184,7 @@ Parameters:
 allowed="p|span|a" - pass "none" to strip all tags or a | delimited list of allowed tags (defaults = allow al)
 find="string1" - string to find (default = false)
 replace="string2" - string to replace found string (default = "")
+insensitive="yes" - perform case insensitive find or replace (default="no")
 trim="left" - left, right, or both (default = "both")
 encode="yes" - HTML encode the string (default = "no")
 decode="yes" - HTML decode the string (default = "no")
