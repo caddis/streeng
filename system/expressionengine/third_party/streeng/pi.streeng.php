@@ -2,7 +2,7 @@
 
 $plugin_info = array (
 	'pi_name' => 'Streeng',
-	'pi_version' => '1.0.2',
+	'pi_version' => '1.1.0',
 	'pi_author' => 'Michael Leigeber',
 	'pi_author_url' => 'http://www.caddis.co',
 	'pi_description' => 'Perform common operations on strings.',
@@ -28,20 +28,35 @@ class Streeng {
 
 		$allowed = $this->EE->TMPL->fetch_param('allowed');
 
-		if ($allowed)
+		if ($allowed !== false)
 		{
 			$string = ($allowed == 'none') ? strip_tags($string) : strip_tags($string, $allowed);
 		}
 
-		// Replace
+		// Find & Replace
 
 		$find = $this->EE->TMPL->fetch_param('find');
 
-		if ($find)
+		if ($find !== false)
 		{
-			$replace = $this->EE->TMPL->fetch_param('replace', '');
+			// Replace
 
-			$string = str_replace($find, $replace, $string);
+			$replace = $this->EE->TMPL->fetch_param('replace');
+
+			// Case sensitivity
+
+			$insensitive = $this->EE->TMPL->fetch_param('insensitive');
+
+			if ($replace !== false)
+			{
+				$string = ($insensitive) ? str_ireplace($find, $replace, $string) : str_replace($find, $replace, $string);
+			}
+			else
+			{
+				$this->return_data = ((($insensitive) ? stripos($string, $find) : strpos($string, $find)) !== false) ? 1 : 0;
+
+				return;
+			}
 		}
 
 		// Trim white space
@@ -121,11 +136,11 @@ class Streeng {
 		$words = (int) $this->EE->TMPL->fetch_param('words');
 		$append = $this->EE->TMPL->fetch_param('append', '&hellip;');
 
-		if ($words)
+		if ($words !== 0)
 		{
 			$string = word_limiter($string, $words, $append);
 		}
-		else if ($characters)
+		else if ($characters !== 0)
 		{
 			$string = character_limiter($string, $characters, $append);
 		}
@@ -175,10 +190,15 @@ append="..." - if trucated append this to the end of the string (default = "&hel
 slug="yes" - convert the string to a slug (default = "no")
 separator="_" - seperator for slug (default = "-")
 repeat="3" - number of times to repeat the string, great for prototyping (default = 0)
+insensitive="yes" - toggle case sensitivity when finding a string (default = "no")
 
 Usage:
 
 {exp:streeng allowed="<p>" title="yes" repeat="2" find=" a " replace=" my "}  <p><b>This</b> is a <a href="#">test</a>.</p>{/exp:streeng}
+
+{if "{exp:streeng find='this' insensitive='yes'}This is a test string{/exp:streeng}"}
+We found 'this' in 'This is a test string'!
+{/if}
 
 <p>This Is My Test</p>
 <p>This Is My Test</p>
