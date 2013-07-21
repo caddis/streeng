@@ -21,6 +21,7 @@ Parameters:
 	slug="yes" - convert the string to a slug (default = "no")
 	separator="_" - separator for slug (default = "-")
 	repeat="3" - number of times to repeat the string, great for prototyping (default = 0)
+	insensitive="yes" - toggle case sensitivity when finding a string (default = "no")
 
 Usage:
 
@@ -29,3 +30,7 @@ Usage:
 	<p>This Is My Test.</p>
 	<p>This Is My Test.</p>
 	<p>This Is My Test.</p>
+
+	{if "{exp:streeng find='this' insensitive='yes'}This is a test string{/exp:streeng}"}
+		We found 'this' in 'This is a test string'!
+	{/if}
