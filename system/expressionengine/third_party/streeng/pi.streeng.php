@@ -2,7 +2,7 @@
 
 $plugin_info = array (
 	'pi_name' => 'Streeng',
-	'pi_version' => '1.1.0',
+	'pi_version' => '1.2.0',
 	'pi_author' => 'Michael Leigeber',
 	'pi_author_url' => 'http://www.caddis.co',
 	'pi_description' => 'Perform common operations on strings.',
@@ -15,37 +15,38 @@ class Streeng {
 
 	public function __construct()
 	{
-		$this->EE =& get_instance();
-
-		$this->EE->load->helper('string');
-		$this->EE->load->helper('text');
+		ee()->load->helper('string');
+		ee()->load->helper('text');
 
 		// Set string to tagdata
 
-		$string = $this->EE->TMPL->tagdata;
+		$string = ee()->TMPL->tagdata;
 
 		// Strip tags
 
-		$allowed = $this->EE->TMPL->fetch_param('allowed');
+		$allowed = ee()->TMPL->fetch_param('allowed');
 
 		if ($allowed !== false)
 		{
-			$string = ($allowed == 'none') ? strip_tags($string) : strip_tags($string, $allowed);
+			$tags = explode('|', $allowed);
+			$allow = '<' . implode('>,<', $tags) . '>';
+
+			$string = ($allowed == 'none') ? strip_tags($string) : strip_tags($string, $allow);
 		}
 
 		// Find & Replace
 
-		$find = $this->EE->TMPL->fetch_param('find');
+		$find = ee()->TMPL->fetch_param('find');
 
 		if ($find !== false)
 		{
 			// Replace
 
-			$replace = $this->EE->TMPL->fetch_param('replace');
+			$replace = ee()->TMPL->fetch_param('replace');
 
 			// Case sensitivity
 
-			$insensitive = $this->EE->TMPL->fetch_param('insensitive');
+			$insensitive = ee()->TMPL->fetch_param('insensitive');
 
 			if ($replace !== false)
 			{
@@ -61,7 +62,7 @@ class Streeng {
 
 		// Trim white space
 
-		$trim = $this->EE->TMPL->fetch_param('trim', 'both');
+		$trim = ee()->TMPL->fetch_param('trim', 'both');
 
 		if ($trim != 'no')
 		{
@@ -76,9 +77,18 @@ class Streeng {
 			}
 		}
 
+		// URL encode
+
+		$url = ee()->TMPL->fetch_param('url');
+
+		if ($url == 'yes')
+		{
+			$string = urlencode($string);
+		}
+
 		// HTML encode
 
-		$encode = $this->EE->TMPL->fetch_param('encode');
+		$encode = ee()->TMPL->fetch_param('encode');
 
 		if ($encode == 'yes')
 		{
@@ -87,7 +97,7 @@ class Streeng {
 
 		// HTML decode
 
-		$decode = $this->EE->TMPL->fetch_param('decode');
+		$decode = ee()->TMPL->fetch_param('decode');
 
 		if ($decode == 'yes')
 		{
@@ -96,7 +106,7 @@ class Streeng {
 
 		// Capitalize
 
-		$capitalize = $this->EE->TMPL->fetch_param('capitalize');
+		$capitalize = ee()->TMPL->fetch_param('capitalize');
 
 		if ($capitalize == 'yes')
 		{
@@ -105,7 +115,7 @@ class Streeng {
 
 		// Title case
 
-		$title = $this->EE->TMPL->fetch_param('title');
+		$title = ee()->TMPL->fetch_param('title');
 
 		if ($title == 'yes')
 		{
@@ -114,7 +124,7 @@ class Streeng {
 
 		// Lower case
 
-		$lower = $this->EE->TMPL->fetch_param('lower');
+		$lower = ee()->TMPL->fetch_param('lower');
 
 		if ($lower == 'yes')
 		{
@@ -123,7 +133,7 @@ class Streeng {
 
 		// Upper case
 
-		$upper = $this->EE->TMPL->fetch_param('upper');
+		$upper = ee()->TMPL->fetch_param('upper');
 
 		if ($upper == 'yes')
 		{
@@ -132,9 +142,9 @@ class Streeng {
 
 		// Truncate
 
-		$characters = (int) $this->EE->TMPL->fetch_param('characters');
-		$words = (int) $this->EE->TMPL->fetch_param('words');
-		$append = $this->EE->TMPL->fetch_param('append', '&hellip;');
+		$characters = (int) ee()->TMPL->fetch_param('characters');
+		$words = (int) ee()->TMPL->fetch_param('words');
+		$append = ee()->TMPL->fetch_param('append', '&hellip;');
 
 		if ($words !== 0)
 		{
@@ -147,18 +157,18 @@ class Streeng {
 
 		// Slug
 
-		$slug = $this->EE->TMPL->fetch_param('slug');
+		$slug = ee()->TMPL->fetch_param('slug');
 
 		if ($slug == 'yes')
 		{
-			$separator = $this->EE->TMPL->fetch_param('separator', '-');
+			$separator = ee()->TMPL->fetch_param('separator', '-');
 
 			$string = preg_replace('/[^A-Za-z0-9-]+/', $separator, $string);
 		}
 
 		// // Repeat
 
-		$repeat = (int) $this->EE->TMPL->fetch_param('repeat', 0);
+		$repeat = (int) ee()->TMPL->fetch_param('repeat', 0);
 
 		if ($repeat > 0)
 		{
@@ -174,12 +184,13 @@ class Streeng {
 ?>
 Parameters:
 
-allowed="p|span|a" - pass "none" to strip all tags or a | delimited list of allowed tags (defaults = allow al)
+allowed="<p>|<span>|<a>" - pass "none" to strip all tags or a | delimited list of allowed tags (defaults = allow al)
 find="string1" - string to find (default = false)
 replace="string2" - string to replace found string (default = "")
 trim="left" - left, right, or both (default = "both")
 encode="yes" - HTML encode the string (default = "no")
 decode="yes" - HTML decode the string (default = "no")
+url="yes" - URL encode the string (default = "no")
 capitalize="yes" - capitalize the first character of the string (default = "no")
 title="yes" - capitalize the first character of every word (default = "no")
 lower="yes" - convert the string to lower case (default = "no")

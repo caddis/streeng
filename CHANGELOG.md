@@ -1,3 +1,10 @@
+# 1.2.0
+
+2013-09-26
+
+- Added new url parameter to URL encode given string
+- Updated to use the new ee() global function (EE 2.6 required)
+
 # 1.1.0
 
 2013-07-20
