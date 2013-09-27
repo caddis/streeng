@@ -1,9 +1,8 @@
-ExpressionEngine String Operations
-====
+# ExpressionEngine String Operations
 
 Perform common operations on strings in ExpressionEngine. All parameters are optional.
 
-Parameters:
+## Parameters
 
 	allowed="p|span|a" - pass "none" to strip all tags or a | delimited list of allowed tags (defaults = allow al)
 	find="string1" - string to find (default = false)
@@ -24,7 +23,7 @@ Parameters:
 	repeat="3" - number of times to repeat the string, great for prototyping (default = 0)
 	insensitive="yes" - toggle case sensitivity when finding a string (default = "no")
 
-Usage:
+## Usage
 
 ```html
 {exp:streeng allowed="p" title="yes" repeat="2" find=" a " replace=" my "}  <p><b>This</b> is a <a href="#">test</a>.</p>{/exp:streeng}
