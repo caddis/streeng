@@ -2,7 +2,7 @@
 
 $plugin_info = array (
 	'pi_name' => 'Streeng',
-	'pi_version' => '1.2.0',
+	'pi_version' => '1.3.0',
 	'pi_author' => 'Michael Leigeber',
 	'pi_author_url' => 'http://www.caddis.co',
 	'pi_description' => 'Perform common operations on strings.',
@@ -122,7 +122,7 @@ class Streeng {
 			$string = ucwords(strtolower($string));
 		}
 
-		// Lower case
+		// Lowercase
 
 		$lower = ee()->TMPL->fetch_param('lower');
 
@@ -131,7 +131,7 @@ class Streeng {
 			$string = strtolower($string);
 		}
 
-		// Upper case
+		// Uppercase
 
 		$upper = ee()->TMPL->fetch_param('upper');
 
@@ -155,6 +155,15 @@ class Streeng {
 			$string = character_limiter($string, $characters, $append);
 		}
 
+		// Auto-close tags when truncates
+
+		if ($words !== 0 or $characters !== 0)
+		{
+			$mode = ee()->TMPL->fetch_param('mode', 'html');
+
+			$string = $this->_close_tags($string, $mode);
+		}
+
 		// Slug
 
 		$slug = ee()->TMPL->fetch_param('slug');
@@ -166,7 +175,7 @@ class Streeng {
 			$string = preg_replace('/[^A-Za-z0-9-]+/', $separator, $string);
 		}
 
-		// // Repeat
+		// Repeat
 
 		$repeat = (int) ee()->TMPL->fetch_param('repeat', 0);
 
@@ -175,7 +184,42 @@ class Streeng {
 			$string .= repeater($string, $repeat);
 		}
 
+		// Substring count
+
+		$count = ee()->TMPL->fetch_param('count');
+
+		if ($count !== false)
+		{
+			$string = substr_count($string, $count);
+		}
+
+		// Split count
+
+		$splits = ee()->TMPL->fetch_param('splits');
+
+		if ($splits !== false)
+		{
+			$string = count(explode($splits, $string));
+		}
+
 		$this->return_data = $string;
+	}
+
+	private function _close_tags($string, $mode)
+	{
+		$html = '';
+
+		$doc = new DOMDocument();
+		$doc->loadHTML("$string");
+
+		$children = $doc->childNodes;
+
+		foreach ($children as $child)
+		{
+			$html .= ($mode == 'html') ? $child->ownerDocument->saveHTML($child) : $child->ownerDocument->saveXML($child);
+		}
+
+		return $html;
 	}
 
 	function usage()
@@ -202,6 +246,9 @@ slug="yes" - convert the string to a slug (default = "no")
 separator="_" - seperator for slug (default = "-")
 repeat="3" - number of times to repeat the string, great for prototyping (default = 0)
 insensitive="yes" - toggle case sensitivity when finding a string (default = "no")
+count="|" - return number of substring instances of a supplied string (default = false)
+splits="|" - return number of exploded values from a supplied string (default = false)
+mode="xhtml" - toggle markup mode for auto-closing open tags (default = "html")
 
 Usage:
 

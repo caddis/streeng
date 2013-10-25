@@ -1,3 +1,10 @@
+# 1.3.0
+
+2013-10-25
+
+- Added tag auto-close capability when truncating
+- Added new options to get substring and split counts
+
 # 1.2.0
 
 2013-09-26

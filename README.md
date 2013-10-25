@@ -1,10 +1,10 @@
-# ExpressionEngine String Operations
+# Streeng 1.3.0
 
 Perform common operations on strings in ExpressionEngine. All parameters are optional.
 
 ## Parameters
 
-	allowed="p|span|a" - pass "none" to strip all tags or a | delimited list of allowed tags (defaults = allow al)
+	allowed="<p>|<span>|<a>" - pass "none" to strip all tags or a | delimited list of allowed tags (defaults = allow al)
 	find="string1" - string to find (default = false)
 	replace="string2" - string to replace found string (default = "")
 	trim="left" - left, right, or both (default = "both")
@@ -17,11 +17,14 @@ Perform common operations on strings in ExpressionEngine. All parameters are opt
 	upper="yes" - convert the string to upper case (default = "no")
 	characters="10" - number of characters to truncate the string to (default = unlimited)
 	words="10" - number of words to truncate the string to (default = unlimited)
-	append="..." - if truncated append this to the end of the string (default = "&hellip;")
+	append="..." - if trucated append this to the end of the string (default = "&hellip;")
 	slug="yes" - convert the string to a slug (default = "no")
-	separator="_" - separator for slug (default = "-")
+	separator="_" - seperator for slug (default = "-")
 	repeat="3" - number of times to repeat the string, great for prototyping (default = 0)
 	insensitive="yes" - toggle case sensitivity when finding a string (default = "no")
+	count="|" - return number of substring instances of a supplied string (default = false)
+	splits="|" - return number of exploded values from a supplied string (default = false)
+	mode="xhtml" - toggle markup mode for auto-closing open tags (default = "html")
 
 ## Usage
 
