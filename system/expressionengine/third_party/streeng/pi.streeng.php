@@ -2,7 +2,7 @@
 
 $plugin_info = array (
 	'pi_name' => 'Streeng',
-	'pi_version' => '1.3.0',
+	'pi_version' => '1.3.1',
 	'pi_author' => 'Michael Leigeber',
 	'pi_author_url' => 'http://www.caddis.co',
 	'pi_description' => 'Perform common operations on strings.',
@@ -207,6 +207,22 @@ class Streeng {
 
 	private function _close_tags($string, $mode)
 	{
+		// Use Tidy if available else use DOMDocument
+
+		if (extension_loaded('tidy'))
+		{
+			$html = new tidy();
+
+			$html->parseString($string, array(
+				'show-body-only' => true,
+				'output-xhtml' => ($mode == 'html') ? false : true
+			), 'utf8');
+
+			$html->cleanRepair();
+
+			return $html;
+		}
+
 		$html = '';
 
 		$doc = new DOMDocument();

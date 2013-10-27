@@ -1,3 +1,9 @@
+# 1.3.1
+
+2013-10-27
+
+- Updated close tags function to use tidy when available
+
 # 1.3.0
 
 2013-10-25
