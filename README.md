@@ -1,4 +1,4 @@
-# Streeng 1.3.1
+# Streeng 1.4.0
 
 Perform common operations on strings in ExpressionEngine. All parameters are optional.
 
@@ -24,7 +24,7 @@ Perform common operations on strings in ExpressionEngine. All parameters are opt
 	insensitive="yes" - toggle case sensitivity when finding a string (default = "no")
 	count="|" - return number of substring instances of a supplied string (default = false)
 	splits="|" - return number of exploded values from a supplied string (default = false)
-	mode="xhtml" - toggle markup mode for auto-closing open tags (default = "html")
+	autoclose="html" - toggle markup mode (html|xhtml) for auto-closing open tags (default = disable autoclose)
 
 ## Usage
 

@@ -1,3 +1,10 @@
+# 1.4.0
+
+2013-11-19
+
+- Resolved issue with DOMDocument and auto-closing tags
+- Replaced mode parameter with autoclose parameter including false option to disable auto-close
+
 # 1.3.1
 
 2013-10-27

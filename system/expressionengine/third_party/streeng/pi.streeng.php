@@ -2,8 +2,8 @@
 
 $plugin_info = array (
 	'pi_name' => 'Streeng',
-	'pi_version' => '1.3.1',
-	'pi_author' => 'Michael Leigeber',
+	'pi_version' => '1.4.0',
+	'pi_author' => 'Caddis',
 	'pi_author_url' => 'http://www.caddis.co',
 	'pi_description' => 'Perform common operations on strings.',
 	'pi_usage' => Streeng::usage()
@@ -40,17 +40,38 @@ class Streeng {
 
 		if ($find !== false)
 		{
-			// Replace
-
 			$replace = ee()->TMPL->fetch_param('replace');
-
-			// Case sensitivity
-
 			$insensitive = ee()->TMPL->fetch_param('insensitive');
+
+			$find = explode('|', $find);
 
 			if ($replace !== false)
 			{
-				$string = ($insensitive) ? str_ireplace($find, $replace, $string) : str_replace($find, $replace, $string);
+				// Options
+
+				$regex = ee()->TMPL->fetch_param('regex');
+				$flags = ee()->TMPL->fetch_param('flags');
+
+				$replace = explode('|', $replace);
+
+				// Replacements
+
+				$replacementOptions = array(
+					'NEWLINE' => "\n",
+					'PIPE'    => '|',
+					'QUOTE'   => '"',
+					'SPACE'   => ' '
+				);
+
+				foreach ($find as $i => $search)
+				{
+					$search = $this->_prep_regex($search, $insensitive, $flags);
+
+					$replacement = isset($replace[$i]) ? $replace[$i] : $replace[0];
+					$replacement = isset($replacementOptions[$replacement]) ? $replacementOptions[$replacement] : $replacement;
+
+					$string = preg_replace($search, $replacement, $string);
+				}
 			}
 			else
 			{
@@ -70,8 +91,10 @@ class Streeng {
 			{
 				case 'both':
 					$string = trim($string);
+					break;
 				case 'left':
 					$string = ltrim($string);
+					break;
 				default:
 					$string = rtrim($string);
 			}
@@ -157,11 +180,11 @@ class Streeng {
 
 		// Auto-close tags when truncates
 
-		if ($words !== 0 or $characters !== 0)
-		{
-			$mode = ee()->TMPL->fetch_param('mode', 'html');
+		$autoclose = ee()->TMPL->fetch_param('autoclose');
 
-			$string = $this->_close_tags($string, $mode);
+		if ($autoclose !== false and ($words !== 0 or $characters !== 0))
+		{
+			$string = $this->_close_tags($string, $autoclose);
 		}
 
 		// Slug
@@ -205,6 +228,35 @@ class Streeng {
 		$this->return_data = $string;
 	}
 
+	function _prep_regex($string, $insensitive = true, $flags = false)
+	{
+		// Check containing characters
+
+		if (substr($string, 0, 1) != '/')
+		{
+			$string = '/' . $string;
+		}
+
+		if (substr($string, -1, 1) != '/')
+		{
+			$string .= '/';
+		}
+
+		// Pattern modifiers
+
+		if ($flags)
+		{
+			$string .= str_replace('i', '', $flags);
+		}
+
+		if (! $insensitive)
+		{
+			$string .= 'i';
+		}
+
+		return $string;
+	}
+
 	private function _close_tags($string, $mode)
 	{
 		// Use Tidy if available else use DOMDocument
@@ -223,17 +275,11 @@ class Streeng {
 			return $html;
 		}
 
-		$html = '';
-
 		$doc = new DOMDocument();
 		$doc->loadHTML("$string");
 
-		$children = $doc->childNodes;
-
-		foreach ($children as $child)
-		{
-			$html .= ($mode == 'html') ? $child->ownerDocument->saveHTML($child) : $child->ownerDocument->saveXML($child);
-		}
+		$html = ($mode == 'html') ? $doc->saveHTML($doc) : $doc->saveXML($doc);
+		$html = preg_replace('~<(?:!DOCTYPE|/?(?:html|head|body))[^>]*>\s*~i', '', $html);
 
 		return $html;
 	}
@@ -264,11 +310,11 @@ repeat="3" - number of times to repeat the string, great for prototyping (defaul
 insensitive="yes" - toggle case sensitivity when finding a string (default = "no")
 count="|" - return number of substring instances of a supplied string (default = false)
 splits="|" - return number of exploded values from a supplied string (default = false)
-mode="xhtml" - toggle markup mode for auto-closing open tags (default = "html")
+autoclose="html" - toggle markup mode (html|xhtml) for auto-closing open tags (default = disable autoclose)
 
 Usage:
 
-{exp:streeng allowed="<p>" title="yes" repeat="2" find=" a " replace=" my "}  <p><b>This</b> is a <a href="#">test</a>.</p>{/exp:streeng}
+{exp:streeng allowed="<p>" title="yes" repeat="2" find=" a " replace=" my "}<p><b>This</b> is a <a href="#">test</a>.</p>{/exp:streeng}
 
 {if "{exp:streeng find='this' insensitive='yes'}This is a test string{/exp:streeng}"}
 We found 'this' in 'This is a test string'!
