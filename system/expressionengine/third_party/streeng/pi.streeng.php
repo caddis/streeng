@@ -2,7 +2,7 @@
 
 $plugin_info = array (
 	'pi_name' => 'Streeng',
-	'pi_version' => '1.4.0',
+	'pi_version' => '1.4.2',
 	'pi_author' => 'Caddis',
 	'pi_author_url' => 'http://www.caddis.co',
 	'pi_description' => 'Perform common operations on strings.',
@@ -52,9 +52,16 @@ class Streeng {
 				$regex = ee()->TMPL->fetch_param('regex');
 				$flags = ee()->TMPL->fetch_param('flags');
 
-				$replace = explode('|', $replace);
+				// Search options
 
-				// Replacements
+				$searchOptions = array(
+					'NEWLINE' => "\n",
+					'PIPE'    => '\|',
+					'QUOTE'   => '"',
+					'SPACE'   => ' '
+				);
+
+				// Replacement options
 
 				$replacementOptions = array(
 					'NEWLINE' => "\n",
@@ -63,8 +70,11 @@ class Streeng {
 					'SPACE'   => ' '
 				);
 
+				$replace = explode('|', $replace);
+
 				foreach ($find as $i => $search)
 				{
+					$search = isset($searchOptions[$search]) ? $searchOptions[$search] : $search;
 					$search = $this->_prep_regex($search, $insensitive, $flags);
 
 					$replacement = isset($replace[$i]) ? $replace[$i] : $replace[0];
@@ -232,12 +242,12 @@ class Streeng {
 	{
 		// Check containing characters
 
-		if (substr($string, 0, 1) != '/')
+		if (substr($string, 0, 1) != '/' or substr($string, 0, 2) == '\/')
 		{
 			$string = '/' . $string;
 		}
 
-		if (substr($string, -1, 1) != '/')
+		if (substr($string, -1, 1) != '/' or substr($string, -2, 2) == '\/')
 		{
 			$string .= '/';
 		}

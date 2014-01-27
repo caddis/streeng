@@ -1,4 +1,4 @@
-# Streeng 1.4.0
+# Streeng 1.4.2
 
 Perform common operations on strings in ExpressionEngine. All parameters are optional.
 
@@ -42,7 +42,7 @@ Perform common operations on strings in ExpressionEngine. All parameters are opt
 
 ## License
 
-Copyright 2013 Caddis Interactive, LLC
+Copyright 2014 Caddis Interactive, LLC
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.

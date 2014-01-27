@@ -1,3 +1,9 @@
+# 1.4.2
+
+2014-01-27
+
+- Fixed issue with non-escaped prefix or suffix forward slashes
+
 # 1.4.0
 
 2013-11-19
