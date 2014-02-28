@@ -300,7 +300,7 @@ class Streeng {
 ?>
 Parameters:
 
-allowed="<p>|<span>|<a>" - pass "none" to strip all tags or a | delimited list of allowed tags (defaults = allow al)
+allowed="p|span|a" - pass "none" to strip all tags or a | delimited list of allowed tags (defaults = allow al)
 find="string1" - string to find (default = false)
 replace="string2" - string to replace found string (default = "")
 trim="left" - left, right, or both (default = "both")
