@@ -1,12 +1,13 @@
-# Streeng 1.4.2
+# Streeng 1.4.3
 
 Perform common operations on strings in ExpressionEngine. All parameters are optional.
 
 ## Parameters
 
-	allowed="p|span|a" - pass "none" to strip all tags or a | delimited list of allowed tags (defaults = allow al)
-	find="string1" - string to find (default = false)
+	allowed="p|span|a" - pass "none" to strip all tags or a | delimited list of allowed tags (defaults = allow all)
+	find="string1" - string to find (default = false, separate multiple values with a the explode variable which defaults to "|", accepts regex)
 	replace="string2" - string to replace found string (default = "")
+	explode="|" - string to split find/replace parameters with
 	trim="left" - left, right, or both (default = "both")
 	encode="yes" - HTML encode the string (default = "no")
 	decode="yes" - HTML decode the string (default = "no")
@@ -29,11 +30,11 @@ Perform common operations on strings in ExpressionEngine. All parameters are opt
 ## Usage
 
 ```html
-{exp:streeng allowed="p" title="yes" repeat="2" find=" a " replace=" my "}  <p><b>This</b> is a <a href="#">test</a>.</p>{/exp:streeng}
+{exp:streeng allowed="p" title="yes" repeat="2" find=" a |Test" replace=" my |sentance"}  <p><b>This</b> is a <a href="#">test</a>.</p>{/exp:streeng}
 
-<p>This Is My Test.</p>
-<p>This Is My Test.</p>
-<p>This Is My Test.</p>
+<p>This Is My sentance.</p>
+<p>This Is My sentance.</p>
+<p>This Is My sentance.</p>
 
 {if "{exp:streeng find='this' insensitive='yes'}This is a test string{/exp:streeng}"}
 	We found 'this' in 'This is a test string'!

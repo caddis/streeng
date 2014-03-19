@@ -2,7 +2,7 @@
 
 $plugin_info = array (
 	'pi_name' => 'Streeng',
-	'pi_version' => '1.4.2',
+	'pi_version' => '1.4.3',
 	'pi_author' => 'Caddis',
 	'pi_author_url' => 'http://www.caddis.co',
 	'pi_description' => 'Perform common operations on strings.',
@@ -43,7 +43,9 @@ class Streeng {
 			$replace = ee()->TMPL->fetch_param('replace');
 			$insensitive = ee()->TMPL->fetch_param('insensitive');
 
-			$find = explode('|', $find);
+			$explode = ee()->TMPL->fetch_param('explode', '|');
+
+			$find = explode($explode, $find);
 
 			if ($replace !== false)
 			{
@@ -70,7 +72,7 @@ class Streeng {
 					'SPACE'   => ' '
 				);
 
-				$replace = explode('|', $replace);
+				$replace = explode($explode, $replace);
 
 				foreach ($find as $i => $search)
 				{
@@ -300,7 +302,7 @@ class Streeng {
 ?>
 Parameters:
 
-allowed="p|span|a" - pass "none" to strip all tags or a | delimited list of allowed tags (defaults = allow al)
+allowed="<p>|<span>|<a>" - pass "none" to strip all tags or a | delimited list of allowed tags (defaults = allow al)
 find="string1" - string to find (default = false)
 replace="string2" - string to replace found string (default = "")
 trim="left" - left, right, or both (default = "both")
