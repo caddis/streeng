@@ -2,7 +2,7 @@
 
 $plugin_info = array (
 	'pi_name' => 'Streeng',
-	'pi_version' => '1.4.3',
+	'pi_version' => '1.5.0',
 	'pi_author' => 'Caddis',
 	'pi_author_url' => 'http://www.caddis.co',
 	'pi_description' => 'Perform common operations on strings.',
@@ -15,9 +15,6 @@ class Streeng {
 
 	public function __construct()
 	{
-		ee()->load->helper('string');
-		ee()->load->helper('text');
-
 		// Set string to tagdata
 
 		$string = ee()->TMPL->tagdata;
@@ -26,8 +23,7 @@ class Streeng {
 
 		$allowed = ee()->TMPL->fetch_param('allowed');
 
-		if ($allowed !== false)
-		{
+		if ($allowed !== false) {
 			$tags = explode('|', $allowed);
 			$allow = '<' . implode('>,<', $tags) . '>';
 
@@ -38,8 +34,7 @@ class Streeng {
 
 		$find = ee()->TMPL->fetch_param('find');
 
-		if ($find !== false)
-		{
+		if ($find !== false) {
 			$replace = ee()->TMPL->fetch_param('replace');
 			$insensitive = ee()->TMPL->fetch_param('insensitive');
 
@@ -47,8 +42,7 @@ class Streeng {
 
 			$find = explode($explode, $find);
 
-			if ($replace !== false)
-			{
+			if ($replace !== false) {
 				// Options
 
 				$regex = ee()->TMPL->fetch_param('regex');
@@ -74,8 +68,7 @@ class Streeng {
 
 				$replace = explode($explode, $replace);
 
-				foreach ($find as $i => $search)
-				{
+				foreach ($find as $i => $search) {
 					$search = isset($searchOptions[$search]) ? $searchOptions[$search] : $search;
 					$search = $this->_prep_regex($search, $insensitive, $flags);
 
@@ -84,9 +77,7 @@ class Streeng {
 
 					$string = preg_replace($search, $replacement, $string);
 				}
-			}
-			else
-			{
+			} else {
 				$this->return_data = ((($insensitive) ? stripos($string, $find) : strpos($string, $find)) !== false) ? 1 : 0;
 
 				return;
@@ -97,10 +88,8 @@ class Streeng {
 
 		$trim = ee()->TMPL->fetch_param('trim', 'both');
 
-		if ($trim != 'no')
-		{
-			switch ($trim)
-			{
+		if ($trim != 'no') {
+			switch ($trim) {
 				case 'both':
 					$string = trim($string);
 					break;
@@ -116,8 +105,7 @@ class Streeng {
 
 		$url = ee()->TMPL->fetch_param('url');
 
-		if ($url == 'yes')
-		{
+		if ($url == 'yes') {
 			$string = urlencode($string);
 		}
 
@@ -125,8 +113,7 @@ class Streeng {
 
 		$encode = ee()->TMPL->fetch_param('encode');
 
-		if ($encode == 'yes')
-		{
+		if ($encode == 'yes') {
 			$string = htmlentities($string);
 		}
 
@@ -134,8 +121,7 @@ class Streeng {
 
 		$decode = ee()->TMPL->fetch_param('decode');
 
-		if ($decode == 'yes')
-		{
+		if ($decode == 'yes') {
 			$string = html_entity_decode($string);
 		}
 
@@ -143,8 +129,7 @@ class Streeng {
 
 		$capitalize = ee()->TMPL->fetch_param('capitalize');
 
-		if ($capitalize == 'yes')
-		{
+		if ($capitalize == 'yes') {
 			$string = ucfirst($string);
 		}
 
@@ -152,8 +137,7 @@ class Streeng {
 
 		$title = ee()->TMPL->fetch_param('title');
 
-		if ($title == 'yes')
-		{
+		if ($title == 'yes') {
 			$string = ucwords(strtolower($string));
 		}
 
@@ -161,8 +145,7 @@ class Streeng {
 
 		$lower = ee()->TMPL->fetch_param('lower');
 
-		if ($lower == 'yes')
-		{
+		if ($lower == 'yes') {
 			$string = strtolower($string);
 		}
 
@@ -170,8 +153,7 @@ class Streeng {
 
 		$upper = ee()->TMPL->fetch_param('upper');
 
-		if ($upper == 'yes')
-		{
+		if ($upper == 'yes') {
 			$string = strtoupper($string);
 		}
 
@@ -181,30 +163,30 @@ class Streeng {
 		$words = (int) ee()->TMPL->fetch_param('words');
 		$append = ee()->TMPL->fetch_param('append', '&hellip;');
 
-		if ($words !== 0)
-		{
-			$string = word_limiter($string, $words, $append);
-		}
-		else if ($characters !== 0)
-		{
-			$string = character_limiter($string, $characters, $append);
-		}
+		if ($words !== 0) {
+			$temp_string = strip_tags($string);
+			$temp_string = explode(' ', $temp_string);
+			$temp_string = implode(' ', array_splice($temp_string, 0, $words + 1));
 
-		// Auto-close tags when truncates
-
-		$autoclose = ee()->TMPL->fetch_param('autoclose');
-
-		if ($autoclose !== false and ($words !== 0 or $characters !== 0))
-		{
-			$string = $this->_close_tags($string, $autoclose);
+			if ($allowed == 'none') {
+				$string = $temp_string . $append;
+			} else {
+				$characters = strlen($temp_string);
+				$string = $this->_truncate_markup($string, $characters, $append, true, true);
+			}
+		} else if ($characters !== 0) {
+			if ($allowed == 'none') {
+				$string = substr($string, 0, strrpos(substr($string, 0, $characters), ' ')) . $append;
+			} else {
+				$string = $this->_truncate_markup($string, $characters, $append, true, true);
+			}
 		}
 
 		// Slug
 
 		$slug = ee()->TMPL->fetch_param('slug');
 
-		if ($slug == 'yes')
-		{
+		if ($slug == 'yes') {
 			$separator = ee()->TMPL->fetch_param('separator', '-');
 
 			$string = preg_replace('/[^A-Za-z0-9-]+/', $separator, $string);
@@ -214,17 +196,15 @@ class Streeng {
 
 		$repeat = (int) ee()->TMPL->fetch_param('repeat', 0);
 
-		if ($repeat > 0)
-		{
-			$string .= repeater($string, $repeat);
+		if ($repeat > 0) {
+			$string .= str_repeat($string, $repeat);
 		}
 
 		// Substring count
 
 		$count = ee()->TMPL->fetch_param('count');
 
-		if ($count !== false)
-		{
+		if ($count !== false) {
 			$string = substr_count($string, $count);
 		}
 
@@ -232,8 +212,7 @@ class Streeng {
 
 		$splits = ee()->TMPL->fetch_param('splits');
 
-		if ($splits !== false)
-		{
+		if ($splits !== false) {
 			$string = count(explode($splits, $string));
 		}
 
@@ -244,56 +223,125 @@ class Streeng {
 	{
 		// Check containing characters
 
-		if (substr($string, 0, 1) != '/' or substr($string, 0, 2) == '\/')
-		{
+		if (substr($string, 0, 1) != '/' or substr($string, 0, 2) == '\/') {
 			$string = '/' . $string;
 		}
 
-		if (substr($string, -1, 1) != '/' or substr($string, -2, 2) == '\/')
-		{
+		if (substr($string, -1, 1) != '/' or substr($string, -2, 2) == '\/') {
 			$string .= '/';
 		}
 
 		// Pattern modifiers
 
-		if ($flags)
-		{
+		if ($flags) {
 			$string .= str_replace('i', '', $flags);
 		}
 
-		if (! $insensitive)
-		{
+		if (! $insensitive) {
 			$string .= 'i';
 		}
 
 		return $string;
 	}
 
-	private function _close_tags($string, $mode)
+	/**
+	 * @package   php-shorten
+	 * @example   example.html.php
+	 * @link      https://github.com/Dreamseer/php-shorten/
+	 * @author    Marc Görtz (http://marcgoertz.de/)
+	 * @license   MIT License
+	 * @copyright Copyright (c) 2011-2013, Marc Görtz
+	 * @version   1.1.0
+	 */
+
+	private function _truncate_markup($markup, $length = 400, $appendix = '…', $appendixInside = FALSE, $wordsafe = FALSE)
 	{
-		// Use Tidy if available else use DOMDocument
+		$truncated = '';
+		$lengthOutput = 0;
+		$position = 0;
+		$tags = array();
 
-		if (extension_loaded('tidy'))
-		{
-			$html = new tidy();
+		// To avoid UTF-8 multibyte glitches we need entities, but no special characters for tags or existing entities
+		$markup = str_replace(array(
+			'&lt;', '&gt;', '&amp;',
+		), array(
+			'<', '>', '&',
+		), htmlentities($markup, ENT_NOQUOTES, 'UTF-8'));
 
-			$html->parseString($string, array(
-				'show-body-only' => true,
-				'output-xhtml' => ($mode == 'html') ? false : true
-			), 'utf8');
+		// Loop through text
+		while ($lengthOutput < $length && preg_match('{</?([a-z]+)[^>]*>|&#?[a-zA-Z0-9]+;}', $markup, $match, PREG_OFFSET_CAPTURE, $position)) {
+			list($tag, $positionTag) = $match[0];
 
-			$html->cleanRepair();
+			// Add text leading up to the tag or entity
+			$text = substr($markup, $position, $positionTag - $position);
 
-			return $html;
+			if ($lengthOutput + strlen($text) > $length) {
+				$truncated .= substr($text, 0, $length - $lengthOutput);
+				$lengthOutput = $length;
+
+				break;
+			}
+
+			$truncated .= $text;
+			$lengthOutput += strlen($text);
+
+			// Add tags and entities
+			if ($tag[0] === '&') {
+				// Handle the entity
+				$truncated .= $tag;
+				// Which is only one character
+				$lengthOutput++;
+			} else {
+				// Handle the tag
+				$tagName = $match[1][0];
+
+				if ($tag[1] === '/') {
+					// This is a closing tag
+					$openingTag = array_pop($tags);
+					// Check that tags are properly nested
+					assert($openingTag === $tagName);
+					$truncated .= $tag;
+				} else if ($tag[strlen($tag) - 2] === '/') {
+					// Self-closing tag in XML dialect
+					$truncated .= $tag;
+				} else {
+					// Opening tag
+					$truncated .= $tag;
+					$tags[] = $tagName;
+				}
+			}
+
+			// Continue after the tag
+			$position = $positionTag + strlen($tag);
 		}
 
-		$doc = new DOMDocument();
-		$doc->loadHTML("$string");
+		// Add any remaining text
+		if ($lengthOutput < $length && $position < strlen($markup)) {
+			$truncated .= substr($markup, $position, $length - $lengthOutput);
+		}
 
-		$html = ($mode == 'html') ? $doc->saveHTML($doc) : $doc->saveXML($doc);
-		$html = preg_replace('~<(?:!DOCTYPE|/?(?:html|head|body))[^>]*>\s*~i', '', $html);
+		// If the words shouldn't be cut in the middle
+		if ($wordsafe) {
+			// Search the last occurance of a space
+			$spacepos = strrpos($truncated, ' ');
 
-		return $html;
+			if (isset($spacepos)) {
+				// Cut the text in this position
+				$truncated = substr($truncated, 0, $spacepos);
+			}
+		}
+
+		// Add appendix to last tag content
+		if ($appendixInside) {
+			$truncated .= $appendix;
+		}
+
+		// Close any open tags
+		while (! empty($tags)) {
+			$truncated .= sprintf('</%s>', array_pop($tags));
+		}
+
+		return ($appendixInside) ? $truncated : $truncated . $appendix;
 	}
 
 	function usage()
@@ -322,7 +370,6 @@ repeat="3" - number of times to repeat the string, great for prototyping (defaul
 insensitive="yes" - toggle case sensitivity when finding a string (default = "no")
 count="|" - return number of substring instances of a supplied string (default = false)
 splits="|" - return number of exploded values from a supplied string (default = false)
-autoclose="html" - toggle markup mode (html|xhtml) for auto-closing open tags (default = disable autoclose)
 
 Usage:
 

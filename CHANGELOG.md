@@ -1,3 +1,12 @@
+# 1.5.0
+
+2014-04-26
+
+- HTML tags are now excluded when doing character or word counts
+- More reliable truncation and tag completion when HTML is present
+- Removed the autoclose parameter, depending on the allowed parameter it is automatically handled
+- Removed references to CodeIgniter string and text helpers, making Streeng fully self-enclosed
+
 # 1.4.2
 
 2014-01-27
