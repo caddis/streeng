@@ -2,7 +2,7 @@
 
 $plugin_info = array (
 	'pi_name' => 'Streeng',
-	'pi_version' => '1.5.0',
+	'pi_version' => '1.5.1',
 	'pi_author' => 'Caddis',
 	'pi_author_url' => 'http://www.caddis.co',
 	'pi_description' => 'Perform common operations on strings.',
@@ -169,14 +169,18 @@ class Streeng {
 			$temp_string = implode(' ', array_splice($temp_string, 0, $words + 1));
 
 			if ($allowed == 'none') {
-				$string = $temp_string . $append;
+				$string = (strlen($temp_string) < strlen($string)) ? ($temp_string . $append) : $temp_string;
 			} else {
 				$characters = strlen($temp_string);
 				$string = $this->_truncate_markup($string, $characters, $append, true, true);
 			}
 		} else if ($characters !== 0) {
 			if ($allowed == 'none') {
-				$string = substr($string, 0, strrpos(substr($string, 0, $characters), ' ')) . $append;
+				$temp_string = strip_tags($string);
+
+				if (strlen($temp_string) > $characters) {
+					$string = substr($temp_string, 0, strrpos(substr($temp_string, 0, $characters), ' ')) . $append;
+				}
 			} else {
 				$string = $this->_truncate_markup($string, $characters, $append, true, true);
 			}
@@ -320,28 +324,32 @@ class Streeng {
 			$truncated .= substr($markup, $position, $length - $lengthOutput);
 		}
 
-		// If the words shouldn't be cut in the middle
-		if ($wordsafe) {
-			// Search the last occurance of a space
-			$spacepos = strrpos($truncated, ' ');
+		if (strlen($truncated) < strlen($markup)) {
+			// If the words shouldn't be cut in the middle
+			if ($wordsafe) {
+				// Search the last occurance of a space
+				$spacepos = strrpos($truncated, ' ');
 
-			if (isset($spacepos)) {
-				// Cut the text in this position
-				$truncated = substr($truncated, 0, $spacepos);
+				if (isset($spacepos)) {
+					// Cut the text in this position
+					$truncated = substr($truncated, 0, $spacepos);
+				}
 			}
+
+			// Add appendix to last tag content
+			if ($appendixInside) {
+				$truncated .= $appendix;
+			}
+
+			// Close any open tags
+			while (! empty($tags)) {
+				$truncated .= sprintf('</%s>', array_pop($tags));
+			}
+
+			return ($appendixInside) ? $truncated : $truncated . $appendix;
 		}
 
-		// Add appendix to last tag content
-		if ($appendixInside) {
-			$truncated .= $appendix;
-		}
-
-		// Close any open tags
-		while (! empty($tags)) {
-			$truncated .= sprintf('</%s>', array_pop($tags));
-		}
-
-		return ($appendixInside) ? $truncated : $truncated . $appendix;
+		return $truncated;
 	}
 
 	function usage()

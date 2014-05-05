@@ -1,4 +1,4 @@
-# Streeng 1.5.0
+# Streeng 1.5.1
 
 Perform common operations on strings in ExpressionEngine. All parameters are optional.
 
