@@ -16,11 +16,9 @@ class Streeng {
 	public function __construct()
 	{
 		// Set string to tagdata
-
 		$string = ee()->TMPL->tagdata;
 
 		// Strip tags
-
 		$allowed = ee()->TMPL->fetch_param('allowed');
 
 		if ($allowed !== false) {
@@ -31,7 +29,6 @@ class Streeng {
 		}
 
 		// Find & Replace
-
 		$find = ee()->TMPL->fetch_param('find');
 
 		if ($find !== false) {
@@ -44,12 +41,9 @@ class Streeng {
 
 			if ($replace !== false) {
 				// Options
-
-				$regex = ee()->TMPL->fetch_param('regex');
 				$flags = ee()->TMPL->fetch_param('flags');
 
 				// Search options
-
 				$searchOptions = array(
 					'NEWLINE' => "\n",
 					'PIPE'    => '\|',
@@ -58,7 +52,6 @@ class Streeng {
 				);
 
 				// Replacement options
-
 				$replacementOptions = array(
 					'NEWLINE' => "\n",
 					'PIPE'    => '|',
@@ -85,7 +78,6 @@ class Streeng {
 		}
 
 		// Trim white space
-
 		$trim = ee()->TMPL->fetch_param('trim', 'both');
 
 		if ($trim != 'no') {
@@ -102,7 +94,6 @@ class Streeng {
 		}
 
 		// URL encode
-
 		$url = ee()->TMPL->fetch_param('url');
 
 		if ($url == 'yes') {
@@ -110,7 +101,6 @@ class Streeng {
 		}
 
 		// HTML encode
-
 		$encode = ee()->TMPL->fetch_param('encode');
 
 		if ($encode == 'yes') {
@@ -118,7 +108,6 @@ class Streeng {
 		}
 
 		// HTML decode
-
 		$decode = ee()->TMPL->fetch_param('decode');
 
 		if ($decode == 'yes') {
@@ -126,7 +115,6 @@ class Streeng {
 		}
 
 		// Capitalize
-
 		$capitalize = ee()->TMPL->fetch_param('capitalize');
 
 		if ($capitalize == 'yes') {
@@ -134,7 +122,6 @@ class Streeng {
 		}
 
 		// Title case
-
 		$title = ee()->TMPL->fetch_param('title');
 
 		if ($title == 'yes') {
@@ -142,7 +129,6 @@ class Streeng {
 		}
 
 		// Lowercase
-
 		$lower = ee()->TMPL->fetch_param('lower');
 
 		if ($lower == 'yes') {
@@ -150,7 +136,6 @@ class Streeng {
 		}
 
 		// Uppercase
-
 		$upper = ee()->TMPL->fetch_param('upper');
 
 		if ($upper == 'yes') {
@@ -158,7 +143,6 @@ class Streeng {
 		}
 
 		// Truncate
-
 		$characters = (int) ee()->TMPL->fetch_param('characters');
 		$words = (int) ee()->TMPL->fetch_param('words');
 		$append = ee()->TMPL->fetch_param('append', '&hellip;');
@@ -187,7 +171,6 @@ class Streeng {
 		}
 
 		// Slug
-
 		$slug = ee()->TMPL->fetch_param('slug');
 
 		if ($slug == 'yes') {
@@ -197,7 +180,6 @@ class Streeng {
 		}
 
 		// Repeat
-
 		$repeat = (int) ee()->TMPL->fetch_param('repeat', 0);
 
 		if ($repeat > 0) {
@@ -205,7 +187,6 @@ class Streeng {
 		}
 
 		// Substring count
-
 		$count = ee()->TMPL->fetch_param('count');
 
 		if ($count !== false) {
@@ -213,7 +194,6 @@ class Streeng {
 		}
 
 		// Split count
-
 		$splits = ee()->TMPL->fetch_param('splits');
 
 		if ($splits !== false) {
@@ -226,7 +206,6 @@ class Streeng {
 	function _prep_regex($string, $insensitive = true, $flags = false)
 	{
 		// Check containing characters
-
 		if (substr($string, 0, 1) != '/' or substr($string, 0, 2) == '\/') {
 			$string = '/' . $string;
 		}
@@ -236,7 +215,6 @@ class Streeng {
 		}
 
 		// Pattern modifiers
-
 		if ($flags) {
 			$string .= str_replace('i', '', $flags);
 		}
@@ -359,7 +337,7 @@ class Streeng {
 Parameters:
 
 allowed="<p>|<span>|<a>" - pass "none" to strip all tags or a | delimited list of allowed tags (defaults = allow al)
-find="string1" - string to find (default = false)
+find="string1" - string or regex to find (default = false)
 replace="string2" - string to replace found string (default = "")
 trim="left" - left, right, or both (default = "both")
 encode="yes" - HTML encode the string (default = "no")
