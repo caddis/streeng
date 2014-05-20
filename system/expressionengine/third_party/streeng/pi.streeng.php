@@ -336,9 +336,10 @@ class Streeng {
 ?>
 Parameters:
 
-allowed="<p>|<span>|<a>" - pass "none" to strip all tags or a | delimited list of allowed tags (defaults = allow al)
-find="string1" - string or regex to find (default = false)
-replace="string2" - string to replace found string (default = "")
+allowed="p|span|a" - pass "none" to strip all tags or a | delimited list of allowed tags (defaults = allow all)
+find="string1" - string or to find (default = false, separate multiple values with a the explode variable which defaults to "|", accepts regex)
+replace="string2" - string or to replace found string (default = "")
+explode="|" - string to split find/replace parameters with
 trim="left" - left, right, or both (default = "both")
 encode="yes" - HTML encode the string (default = "no")
 decode="yes" - HTML decode the string (default = "no")
