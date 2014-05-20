@@ -139,12 +139,12 @@ This is really useful for protecting code examples and the like.
 Example:
 
 	{exp:streeng encode="yes"}
-		String will encode prime quotation marks as &quot; entities.
+		Streeng will encode prime quotation marks as &quot; entities.
 	{/exp:streeng}
 
 Result:
 
-	String will encode prime quotation marks as &amp;quot; entities.
+	Streeng will encode prime quotation marks as &amp;quot; entities.
 
 Or you can reverse the process with decode="yes".
 
@@ -202,8 +202,8 @@ This function will replace spaces in your string with dashes (default) or whatev
 
 ### Counts and Splits
 
-count="|" — return the number of instances the supplied string appears.
-splits="|" — return the number of exploded values from the supplied string.
+**count="|"** — return the number of instances the supplied string appears.  
+**splits="|"** — return the number of exploded values from the supplied string.
 
 ## License
 
