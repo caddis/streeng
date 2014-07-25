@@ -2,7 +2,7 @@
 	"schema_version": "1.0",
 	"name" : "streeng",
 	"label": "Streeng",
-	"version": "1.5.1",
+	"version": "1.5.2",
 	"types": ["plugin"],
 	"paths": {
 		"system": [

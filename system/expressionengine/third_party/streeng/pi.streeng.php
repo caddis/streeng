@@ -2,7 +2,7 @@
 
 $plugin_info = array (
 	'pi_name' => 'Streeng',
-	'pi_version' => '1.5.1',
+	'pi_version' => '1.5.2',
 	'pi_author' => 'Caddis',
 	'pi_author_url' => 'http://www.caddis.co',
 	'pi_description' => 'Perform common operations on strings.',
@@ -308,7 +308,7 @@ class Streeng {
 				// Search the last occurance of a space
 				$spacepos = strrpos($truncated, ' ');
 
-				if (isset($spacepos)) {
+				if ($spacepos !== false) {
 					// Cut the text in this position
 					$truncated = substr($truncated, 0, $spacepos);
 				}

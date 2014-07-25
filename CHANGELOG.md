@@ -1,3 +1,9 @@
+# 1.5.2
+
+2014-07-25
+
+- Resolved issue where truncated exerpts without spaces would return nothing
+
 # 1.5.1
 
 2014-05-05
