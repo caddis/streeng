@@ -2,7 +2,7 @@
 
 $plugin_info = array (
 	'pi_name' => 'Streeng',
-	'pi_version' => '1.5.2',
+	'pi_version' => '1.5.3',
 	'pi_author' => 'Caddis',
 	'pi_author_url' => 'http://www.caddis.co',
 	'pi_description' => 'Perform common operations on strings.',
@@ -203,7 +203,7 @@ class Streeng {
 		$this->return_data = $string;
 	}
 
-	function _prep_regex($string, $insensitive = true, $flags = false)
+	private function _prep_regex($string, $insensitive = true, $flags = false)
 	{
 		// Check containing characters
 		if (substr($string, 0, 1) != '/' or substr($string, 0, 2) == '\/') {
@@ -330,7 +330,7 @@ class Streeng {
 		return $truncated;
 	}
 
-	function usage()
+	public static function usage()
 	{
 		ob_start();
 ?>

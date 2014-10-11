@@ -1,3 +1,9 @@
+# 1.5.3
+
+2014-10-11
+
+- Add missing scope to functions to eliminate warning in PHP 5.6.x
+
 # 1.5.2
 
 2014-07-25
