@@ -35,10 +35,6 @@ class Streeng {
 			$replace = ee()->TMPL->fetch_param('replace');
 			$insensitive = ee()->TMPL->fetch_param('insensitive');
 
-			$explode = ee()->TMPL->fetch_param('explode', '|');
-
-			$find = explode($explode, $find);
-
 			if ($replace !== false) {
 				// Options
 				$flags = ee()->TMPL->fetch_param('flags');
@@ -58,6 +54,10 @@ class Streeng {
 					'QUOTE'   => '"',
 					'SPACE'   => ' '
 				);
+
+				$explode = ee()->TMPL->fetch_param('explode', '|');
+
+				$find = explode($explode, $find);
 
 				$replace = explode($explode, $replace);
 
