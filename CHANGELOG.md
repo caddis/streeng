@@ -1,3 +1,9 @@
+# 1.5.4
+
+2015-01-15
+
+- Fix error caused by empty replace parameter if find exists
+
 # 1.5.3
 
 2014-10-11

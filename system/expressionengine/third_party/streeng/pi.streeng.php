@@ -2,7 +2,7 @@
 
 $plugin_info = array (
 	'pi_name' => 'Streeng',
-	'pi_version' => '1.5.3',
+	'pi_version' => '1.5.4',
 	'pi_author' => 'Caddis',
 	'pi_author_url' => 'http://www.caddis.co',
 	'pi_description' => 'Perform common operations on strings.',
@@ -28,7 +28,7 @@ class Streeng {
 			$string = ($allowed == 'none') ? strip_tags($string) : strip_tags($string, $allow);
 		}
 
-		// Find & Replace
+		// Find and replace
 		$find = ee()->TMPL->fetch_param('find');
 
 		if ($find !== false) {
@@ -58,7 +58,6 @@ class Streeng {
 				$explode = ee()->TMPL->fetch_param('explode', '|');
 
 				$find = explode($explode, $find);
-
 				$replace = explode($explode, $replace);
 
 				foreach ($find as $i => $search) {
