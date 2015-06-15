@@ -110,7 +110,7 @@ class Streeng {
 		$decode = ee()->TMPL->fetch_param('decode');
 
 		if ($decode == 'yes') {
-			$string = html_entity_decode($string);
+			$string = html_entity_decode($string, ENT_COMPAT, "UTF-8");
 		}
 
 		// Capitalize
