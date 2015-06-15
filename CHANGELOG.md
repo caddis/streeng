@@ -1,3 +1,10 @@
+# 1.6.0
+
+2015-06-15
+
+- Added typography parsing options using ExpressionEngine's native typography class
+- Fixed a bug where decode would not use UTF-8
+
 # 1.5.4
 
 2015-01-15

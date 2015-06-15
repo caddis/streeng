@@ -2,7 +2,7 @@
 
 $plugin_info = array (
 	'pi_name' => 'Streeng',
-	'pi_version' => '1.5.4',
+	'pi_version' => '1.6.0',
 	'pi_author' => 'Caddis',
 	'pi_author_url' => 'http://www.caddis.co',
 	'pi_description' => 'Perform common operations on strings.',
@@ -197,6 +197,36 @@ class Streeng {
 
 		if ($splits !== false) {
 			$string = count(explode($splits, $string));
+		}
+
+		// Parse typography
+		$typography = ee()->TMPL->fetch_param('typography');
+
+		if ($typography !== false) {
+			$typographyAllowed = array(
+				'all',
+				'xhtml',
+				'br',
+				'lite'
+			);
+
+			if (in_array($typography, $typographyAllowed)) {
+				ee()->load->library('typography');
+
+				ee()->typography->initialize();
+
+				$typographyPrefs = array(
+					'text_format' => $typography,
+					'html_format' => 'all',
+					'auto_links' => 'n',
+					'allow_img_url' => 'y'
+				);
+
+				$string = ee()->typography->parse_type(
+					$string,
+					$typographyPrefs
+				);
+			}
 		}
 
 		$this->return_data = $string;
