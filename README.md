@@ -1,4 +1,4 @@
-# Streeng 1.5.4
+# Streeng 1.6.0
 
 Perform common operations on strings such as change case, truncate, find/replace, repeat, encode/decode, generate slugs and more.
 
@@ -125,9 +125,9 @@ http://caddis.co
 
 Streng also provides some keywords to search for special characters.
 
-**`find="NEWLINE"`** — Finds a new line.  
-**`find="PIPE"`** — Find the | character.  
-**`find="QUOTE`** — Find a prime quote: ".  
+**`find="NEWLINE"`** — Finds a new line.
+**`find="PIPE"`** — Find the | character.
+**`find="QUOTE`** — Find a prime quote: ".
 **`find="SPACE"`** — Find a space character.
 
 ### Trim
@@ -218,9 +218,9 @@ my%2Furl%2Fsegments
 
 ### Sentence Manipulations
 
-**`capitalize="yes"`** — capitalize the first character of the string  
-**`title="yes"`** — capitalize the first character of every word  
-**`lower="yes"`** — convert the string to lower case  
+**`capitalize="yes"`** — capitalize the first character of the string
+**`title="yes"`** — capitalize the first character of every word
+**`lower="yes"`** — convert the string to lower case
 **`upper="yes"`** – convert the string to upper case
 
 ### Limiting and Truncating
@@ -229,15 +229,15 @@ All limiting and truncating will only count characters and words that are not HT
 
 Here are the parameters:
 
-**`characters="20"`** — truncate the string by character count  
-**`words="10"`** — truncate the string by word count  
+**`characters="20"`** — truncate the string by character count
+**`words="10"`** — truncate the string by word count
 **`append="&hellip"`** — if truncated this will be appended to the end of the string.
 
 ### Slug
 
 This function will replace spaces in your string with dashes (default) or whatever you specify.
 
-**`slug="yes"`** — Replace spaces in the string with dashes, or your specified separator  
+**`slug="yes"`** — Replace spaces in the string with dashes, or your specified separator
 **`separator="_"`** — Optionally specify the separator to use in the slug
 
 ### Repeat
@@ -292,7 +292,7 @@ Result:
 
 ## License
 
-Copyright 2014 Caddis Interactive, LLC
+Copyright 2015 Caddis Interactive, LLC
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
