@@ -366,4 +366,3 @@ class Streeng {
 		return 'See docs and examples at https://github.com/caddis/streeng';
 	}
 }
-?>
