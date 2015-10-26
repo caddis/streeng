@@ -1,0 +1,46 @@
+#------------------------------------
+	# Tools
+#------------------------------------
+
+.bundle
+.idea/
+.komodotools
+.project
+.settings/
+.tern-project
+.tmproj
+.vscode/
+*.esproj
+*.komodoproject
+*.sublime-*
+browserstack.js
+codekit-config.json
+mixture.json
+prepros.json
+
+
+#------------------------------------
+	# System
+#------------------------------------
+
+.cache
+.DS_Store
+.tmp
+*.diff
+*.err
+*.lock
+*.log
+*.orig
+*.rej
+*.swo
+*.swp
+*.vi
+error_log
+Thumbs.db
+
+
+#------------------------------------
+	# Gitkeep
+#------------------------------------
+
+!.gitkeep

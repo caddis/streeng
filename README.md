@@ -1,4 +1,4 @@
-# Streeng 1.6.0
+# Streeng 1.7.0
 
 Perform common operations on strings such as change case, truncate, find/replace, repeat, encode/decode, generate slugs and more.
 
@@ -289,6 +289,18 @@ Result:
 
 <p>Paragraphs also are a good thing to have for world domination!</p>
 ```
+
+## Installation
+
+### EE 2
+
+DevDemon Updater is fully supported, or for manual installs, copy `system/expressionengine/third_party/streeng` to your third_party system directory.
+
+### EE 3
+
+1. Copy `system/expressionengine/third_party/streeng` to `system/user/addons`
+2. Go to your control panel and navigate to the Add-On Manager
+3. Locate Streeng in the Third Part Add-Ons section and click install
 
 ## License
 
