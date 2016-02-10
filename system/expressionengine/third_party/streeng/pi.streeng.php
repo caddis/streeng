@@ -11,13 +11,11 @@ $plugin_info = array (
 	'pi_usage' => Streeng::usage()
 );
 
-class Streeng {
-
+class Streeng
+{
 	public $return_data = '';
 
-	public function __construct()
-	{
-		// Set string to tagdata
+	public function __construct() {
 		$string = ee()->TMPL->tagdata;
 
 		// Strip tags
@@ -27,7 +25,9 @@ class Streeng {
 			$tags = explode('|', $allowed);
 			$allow = '<' . implode('>,<', $tags) . '>';
 
-			$string = ($allowed == 'none') ? strip_tags($string) : strip_tags($string, $allow);
+			$string = ($allowed === 'none') ?
+				strip_tags($string) :
+				strip_tags($string, $allow);
 		}
 
 		// Find and replace
@@ -63,25 +63,35 @@ class Streeng {
 				$replace = explode($explode, $replace);
 
 				foreach ($find as $i => $search) {
-					$search = isset($searchOptions[$search]) ? $searchOptions[$search] : $search;
+					$search = isset($searchOptions[$search]) ?
+						$searchOptions[$search] :
+						$search;
 					$search = $this->_prep_regex($search, $insensitive, $flags);
 
-					$replacement = isset($replace[$i]) ? $replace[$i] : $replace[0];
-					$replacement = isset($replacementOptions[$replacement]) ? $replacementOptions[$replacement] : $replacement;
+					$replacement = isset($replace[$i]) ?
+						$replace[$i] :
+						$replace[0];
+					$replacement = isset($replacementOptions[$replacement]) ?
+						$replacementOptions[$replacement] :
+						$replacement;
 
 					$string = preg_replace($search, $replacement, $string);
 				}
 			} else {
-				$this->return_data = ((($insensitive) ? stripos($string, $find) : strpos($string, $find)) !== false) ? 1 : 0;
+				$this->return_data = ((
+					$insensitive ?
+						stripos($string, $find) :
+						strpos($string, $find)
+					) !== false) ? 1 : 0;
 
 				return;
 			}
 		}
 
-		// Trim white space
+		// Trim whitespace
 		$trim = ee()->TMPL->fetch_param('trim', 'both');
 
-		if ($trim != 'no') {
+		if ($trim !== 'no') {
 			switch ($trim) {
 				case 'both':
 					$string = trim($string);
@@ -97,49 +107,49 @@ class Streeng {
 		// URL encode
 		$url = ee()->TMPL->fetch_param('url');
 
-		if ($url == 'yes') {
+		if ($url === 'yes') {
 			$string = urlencode($string);
 		}
 
 		// HTML encode
 		$encode = ee()->TMPL->fetch_param('encode');
 
-		if ($encode == 'yes') {
+		if ($encode === 'yes') {
 			$string = htmlentities($string);
 		}
 
 		// HTML decode
 		$decode = ee()->TMPL->fetch_param('decode');
 
-		if ($decode == 'yes') {
+		if ($decode === 'yes') {
 			$string = html_entity_decode($string, ENT_COMPAT, "UTF-8");
 		}
 
 		// Capitalize
 		$capitalize = ee()->TMPL->fetch_param('capitalize');
 
-		if ($capitalize == 'yes') {
+		if ($capitalize === 'yes') {
 			$string = ucfirst($string);
 		}
 
 		// Title case
 		$title = ee()->TMPL->fetch_param('title');
 
-		if ($title == 'yes') {
+		if ($title === 'yes') {
 			$string = ucwords(strtolower($string));
 		}
 
 		// Lowercase
 		$lower = ee()->TMPL->fetch_param('lower');
 
-		if ($lower == 'yes') {
+		if ($lower === 'yes') {
 			$string = strtolower($string);
 		}
 
 		// Uppercase
 		$upper = ee()->TMPL->fetch_param('upper');
 
-		if ($upper == 'yes') {
+		if ($upper === 'yes') {
 			$string = strtoupper($string);
 		}
 
@@ -153,52 +163,36 @@ class Streeng {
 			$temp_string = explode(' ', $temp_string);
 			$temp_string = implode(' ', array_splice($temp_string, 0, $words + 1));
 
-			if ($allowed == 'none') {
-				$string = (strlen($temp_string) < strlen($string)) ? ($temp_string . $append) : $temp_string;
+			if ($allowed === 'none') {
+				$string = strlen($temp_string) < strlen($string) ?
+					($temp_string . $append) :
+					$temp_string;
 			} else {
 				$characters = strlen($temp_string);
 				$string = $this->_truncate_markup($string, $characters, $append, true, true);
 			}
-		} else if ($characters !== 0) {
-			if ($allowed == 'none') {
+		} elseif ($characters !== 0) {
+			if ($allowed === 'none') {
 				$temp_string = strip_tags($string);
 
 				if (strlen($temp_string) > $characters) {
-					$string = substr($temp_string, 0, strrpos(substr($temp_string, 0, $characters), ' ')) . $append;
+					$pos = strrpos(substr($temp_string, 0, $characters), ' ');
+					$string = substr($temp_string, 0, $pos) . $append;
 				}
 			} else {
-				$string = $this->_truncate_markup($string, $characters, $append, true, true);
+				$string = $this->_truncate_markup(
+					$string, $characters, $append, true, true
+				);
 			}
 		}
 
 		// Slug
 		$slug = ee()->TMPL->fetch_param('slug');
 
-		if ($slug == 'yes') {
+		if ($slug === 'yes') {
 			$separator = ee()->TMPL->fetch_param('separator', '-');
 
 			$string = preg_replace('/[^A-Za-z0-9-]+/', $separator, $string);
-		}
-
-		// Repeat
-		$repeat = (int) ee()->TMPL->fetch_param('repeat', 0);
-
-		if ($repeat > 0) {
-			$string .= str_repeat($string, $repeat);
-		}
-
-		// Substring count
-		$count = ee()->TMPL->fetch_param('count');
-
-		if ($count !== false) {
-			$string = substr_count($string, $count);
-		}
-
-		// Split count
-		$splits = ee()->TMPL->fetch_param('splits');
-
-		if ($splits !== false) {
-			$string = count(explode($splits, $string));
 		}
 
 		// Parse typography
@@ -231,17 +225,42 @@ class Streeng {
 			}
 		}
 
+		// Repeat
+		$repeat = (int) ee()->TMPL->fetch_param('repeat', 0);
+
+		if ($repeat > 0) {
+			$string .= str_repeat($string, $repeat);
+		}
+
+		// Substring count
+		$count = ee()->TMPL->fetch_param('count');
+
+		if ($count !== false) {
+			if ($count === 'ALL') {
+				$string = strlen($string);
+			} else {
+				$string = substr_count($string, $count);
+			}
+		}
+
+		// Split count
+		$splits = ee()->TMPL->fetch_param('splits');
+
+		if ($splits !== false) {
+			$string = count(explode($splits, $string));
+		}
+
 		$this->return_data = $string;
 	}
 
 	private function _prep_regex($string, $insensitive = true, $flags = false)
 	{
 		// Check containing characters
-		if (substr($string, 0, 1) != '/' or substr($string, 0, 2) == '\/') {
+		if (substr($string, 0, 1) !== '/' || substr($string, 0, 2) === '\/') {
 			$string = '/' . $string;
 		}
 
-		if (substr($string, -1, 1) != '/' or substr($string, -2, 2) == '\/') {
+		if (substr($string, -1, 1) !== '/' || substr($string, -2, 2) === '\/') {
 			$string .= '/';
 		}
 
@@ -267,8 +286,7 @@ class Streeng {
 	 * @version   1.1.0
 	 */
 
-	private function _truncate_markup($markup, $length = 400, $appendix = '…', $appendixInside = FALSE, $wordsafe = FALSE)
-	{
+	private function _truncate_markup($markup, $length = 400, $appendix = '…', $appendixInside = false, $wordsafe = false) {
 		$truncated = '';
 		$lengthOutput = 0;
 		$position = 0;
@@ -314,7 +332,7 @@ class Streeng {
 					// Check that tags are properly nested
 					assert($openingTag === $tagName);
 					$truncated .= $tag;
-				} else if ($tag[strlen($tag) - 2] === '/') {
+				} elseif ($tag[strlen($tag) - 2] === '/') {
 					// Self-closing tag in XML dialect
 					$truncated .= $tag;
 				} else {
@@ -336,7 +354,7 @@ class Streeng {
 		if (strlen($truncated) < strlen($markup)) {
 			// If the words shouldn't be cut in the middle
 			if ($wordsafe) {
-				// Search the last occurance of a space
+				// Search the last occurrence of a space
 				$spacepos = strrpos($truncated, ' ');
 
 				if ($spacepos !== false) {
@@ -361,8 +379,7 @@ class Streeng {
 		return $truncated;
 	}
 
-	public static function usage()
-	{
+	public static function usage() {
 		return 'See docs and examples at https://github.com/caddis/streeng';
 	}
 }
