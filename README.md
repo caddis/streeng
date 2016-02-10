@@ -305,4 +305,4 @@ DevDemon Updater is fully supported, or for manual installs copy "system/express
 
 ## License
 
-Copyright 2016 [Caddis Interactive, LLC](https://www.caddis.co). Licensed under the [Apache License, Version 2.0](https://github.com/weepower/wee/blob/master/LICENSE).
+Copyright 2016 [Caddis Interactive, LLC](https://www.caddis.co). Licensed under the [Apache License, Version 2.0](https://github.com/caddis/streeng/blob/master/LICENSE).
