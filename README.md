@@ -1,6 +1,6 @@
-# Streeng 1.7.0
+# Streeng 1.8.0
 
-Perform common operations on strings such as change case, truncate, find/replace, repeat, encode/decode, generate slugs and more.
+Perform common operations on strings such as changing case, truncating, finding/replacing, repeating, encoding/decoding, generating slugs, and more.
 
 ## Quick Tag Reference (full documentation below)
 
@@ -47,7 +47,7 @@ or
 allowed="p|span|a"
 ```
 
-This will strip either all (if set to `allowed="none"`) or the desired HTML tags from the string enclosed by the tag pair. If this parameter is not set, the default is to allow all.
+This will strip either all (if set to `allowed="none"`) or the desired HTML tags from the string enclosed by the tag pair. If this parameter is not set the default is to allow all.
 
 Example:
 
@@ -85,13 +85,13 @@ insensitive="yes"
 explode="|" — default: |
 ```
 
-`find=""` accepts a pipe delimited list of strings to find and replace with the contents of `replace=""`. Allows you to find all instances of a string and replace it with your desired text, or you can set replace="" to simply remove the matching string.
+`find=""` accepts a pipe delimited list of strings to find and replace with the contents of `replace=""`. Allows you to find all instances of a string and replace them with your desired text, or you can set replace="" to simply remove the matching string.
 
 Optionally specify case sensitivity. Default is not case sensitive.
 
 Optionally specify the explode parameter. Default is pipe.
 
-You can also use regex in your `find=""` parameter.
+You can also use Regex in your `find=""` parameter.
 
 Example:
 
@@ -110,25 +110,25 @@ Our plans for world domination are none of your concern.
 Example:
 
 ```
-{exp:streeng find="http:\/\/(.*).com" replace="http://caddis.co"}
-	http://caddisint.com
+{exp:streeng find="http:\/\/(.*).com" replace="https://www.caddis.co"}
+	https://caddisint.com
 {/exp:streeng}
 ```
 
 Result:
 
 ```
-http://caddis.co
+https://www.caddis.co
 ```
 
 #### Special Characters in Find and Replace
 
 Streng also provides some keywords to search for special characters.
 
-**`find="NEWLINE"`** — Finds a new line.
-**`find="PIPE"`** — Find the | character.
-**`find="QUOTE`** — Find a prime quote: ".
-**`find="SPACE"`** — Find a space character.
+**`find="NEWLINE"`** — Finds a new line
+**`find="PIPE"`** — Find the | character
+**`find="QUOTE`** — Find a prime quote: "
+**`find="SPACE"`** — Find a space character
 
 ### Trim
 
@@ -231,7 +231,7 @@ Here are the parameters:
 
 **`characters="20"`** — truncate the string by character count
 **`words="10"`** — truncate the string by word count
-**`append="&hellip"`** — if truncated this will be appended to the end of the string.
+**`append="&hellip"`** — if truncated this will be appended to the end of the string
 
 ### Slug
 
@@ -242,12 +242,12 @@ This function will replace spaces in your string with dashes (default) or whatev
 
 ### Repeat
 
-**`repeat="3"`** — Specify the number of times to repeat the string between the tag pair. This is in addition to the initial content. So if you specify the number two, you will see your string three times.
+**`repeat="3"`** — Specify the number of times to repeat the string between the tag pair. This is in addition to the initial content. So if you specify the number 2, you will see your string three times.
 
 ### Counts and Splits
 
-**`count="|"`** — return the number of instances the supplied string appears.
-**`splits="|"`** — return the number of exploded values from the supplied string.
+**`count="|"`** — return the number of instances the supplied string appears. Pass "ALL" to count all characters.
+**`splits="|"`** — return the number of exploded values from the supplied string
 
 ### Typography
 
@@ -294,26 +294,15 @@ Result:
 
 ### EE 2
 
-DevDemon Updater is fully supported, or for manual installs, copy `system/expressionengine/third_party/streeng` to your third_party system directory.
+DevDemon Updater is fully supported, or for manual installs copy "system/expressionengine/third_party/streeng" to your third_party system directory.
 
 ### EE 3
 
-1. Copy `system/expressionengine/third_party/streeng` to `system/user/addons`
+1. Copy "system/expressionengine/third_party/streeng" to "system/user/addons"
 2. Go to your control panel and navigate to the Add-On Manager
-3. Locate Streeng in the Third Part Add-Ons section and click install
+3. Locate Streeng in the Third Party Add-Ons section and click install
+
 
 ## License
 
-Copyright 2015 Caddis Interactive, LLC
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-	http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+Copyright 2016 [Caddis Interactive, LLC](https://www.caddis.co). Licensed under the [Apache License, Version 2.0](https://github.com/weepower/wee/blob/master/LICENSE).
