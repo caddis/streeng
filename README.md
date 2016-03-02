@@ -1,4 +1,4 @@
-# Streeng 1.8.0
+# Streeng 1.9.0
 
 Perform common operations on strings such as changing case, truncating, finding/replacing, repeating, encoding/decoding, generating slugs, and more.
 
