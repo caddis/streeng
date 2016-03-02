@@ -144,6 +144,26 @@ class Streeng
 			);
 		}
 
+		// HTML special characters
+		$specialchars = ee()->TMPL->fetch_param('specialchars');
+
+		if ($specialchars === 'yes') {
+			$specialchars_flags = constant(
+				ee()->TMPL->fetch_param('specialchars_flags', 'ENT_COMPAT')
+			);
+
+			$specialchars_encoding = ee()->TMPL->fetch_param(
+				'decode_flags',
+				'UTF-8'
+			);
+
+			$string = htmlspecialchars(
+				$string,
+				$specialchars_flags,
+				$specialchars_encoding
+			);
+		}
+
 		// Capitalize
 		$capitalize = ee()->TMPL->fetch_param('capitalize');
 
