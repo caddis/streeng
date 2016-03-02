@@ -115,7 +115,16 @@ class Streeng
 		$encode = ee()->TMPL->fetch_param('encode');
 
 		if ($encode === 'yes') {
-			$string = htmlentities($string);
+			$encode_flags = constant(
+				ee()->TMPL->fetch_param('encode_flags', 'ENT_COMPAT')
+			);
+
+			$encode_encoding = ee()->TMPL->fetch_param(
+				'encode_encoding',
+				'UTF-8'
+			);
+
+			$string = htmlentities($string, $encode_flags, $encode_encoding);
 		}
 
 		// HTML decode
