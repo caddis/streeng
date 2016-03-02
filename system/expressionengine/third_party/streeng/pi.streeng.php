@@ -131,7 +131,17 @@ class Streeng
 		$decode = ee()->TMPL->fetch_param('decode');
 
 		if ($decode === 'yes') {
-			$string = html_entity_decode($string, ENT_COMPAT, "UTF-8");
+			$decode_flags = constant(
+				ee()->TMPL->fetch_param('decode_flags', 'ENT_COMPAT')
+			);
+
+			$decode_encoding = ee()->TMPL->fetch_param('decode_flags', 'UTF-8');
+
+			$string = html_entity_decode(
+				$string,
+				$decode_flags,
+				$decode_encoding
+			);
 		}
 
 		// Capitalize
