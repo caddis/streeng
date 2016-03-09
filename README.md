@@ -1,4 +1,4 @@
-# Streeng 1.8.0
+# Streeng 1.9.0
 
 Perform common operations on strings such as changing case, truncating, finding/replacing, repeating, encoding/decoding, generating slugs, and more.
 
@@ -143,6 +143,7 @@ Specify the trimming of white space with this parameter. Default = "both"
 ```
 encode="yes"
 decode="yes"
+specialchars="yes"
 url="yes"
 ```
 
@@ -151,6 +152,17 @@ HTML encode or decode, or URL encode a string.
 #### HTML Encode
 
 With `encode="yes"`, a prime quotation mark would be encoded as `&quot;` and ampersands encoded as `&amp;`
+
+#### Additional encode/decode parameters
+
+When using `encode` you can also use `encode_flags` and `encode_encoding` parameters.  
+http://php.net/manual/en/function.html-entity-decode.php
+
+When using `decode` you can also use `decode_flags` and `decode_encoding` parameters.  
+http://php.net/manual/en/function.htmlentities.php
+
+When using `specialchars` you can also use `specialchars_flags` and `specialchars_encoding` parameters.  
+http://php.net/manual/en/function.htmlspecialchars.php
 
 Example:
 

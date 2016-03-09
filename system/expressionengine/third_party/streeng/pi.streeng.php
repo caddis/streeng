@@ -115,14 +115,53 @@ class Streeng
 		$encode = ee()->TMPL->fetch_param('encode');
 
 		if ($encode === 'yes') {
-			$string = htmlentities($string);
+			$encode_flags = constant(
+				ee()->TMPL->fetch_param('encode_flags', 'ENT_COMPAT')
+			);
+
+			$encode_encoding = ee()->TMPL->fetch_param(
+				'encode_encoding',
+				'UTF-8'
+			);
+
+			$string = htmlentities($string, $encode_flags, $encode_encoding);
 		}
 
 		// HTML decode
 		$decode = ee()->TMPL->fetch_param('decode');
 
 		if ($decode === 'yes') {
-			$string = html_entity_decode($string, ENT_COMPAT, "UTF-8");
+			$decode_flags = constant(
+				ee()->TMPL->fetch_param('decode_flags', 'ENT_COMPAT')
+			);
+
+			$decode_encoding = ee()->TMPL->fetch_param('decode_flags', 'UTF-8');
+
+			$string = html_entity_decode(
+				$string,
+				$decode_flags,
+				$decode_encoding
+			);
+		}
+
+		// HTML special characters
+		$specialchars = ee()->TMPL->fetch_param('specialchars');
+
+		if ($specialchars === 'yes') {
+			$specialchars_flags = constant(
+				ee()->TMPL->fetch_param('specialchars_flags', 'ENT_COMPAT')
+			);
+
+			$specialchars_encoding = ee()->TMPL->fetch_param(
+				'decode_flags',
+				'UTF-8'
+			);
+
+			$string = htmlspecialchars(
+				$string,
+				$specialchars_flags,
+				$specialchars_encoding
+			);
 		}
 
 		// Capitalize
