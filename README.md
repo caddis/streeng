@@ -153,13 +153,16 @@ HTML encode or decode, or URL encode a string.
 
 With `encode="yes"`, a prime quotation mark would be encoded as `&quot;` and ampersands encoded as `&amp;`
 
-#### encode/decode additional parameters
+#### Additional encode/decode parameters
 
-When using `encode` you can also use `encode_flags` and `encode_encoding` parameters. See options here: http://php.net/manual/en/function.html-entity-decode.php
+When using `encode` you can also use `encode_flags` and `encode_encoding` parameters.  
+http://php.net/manual/en/function.html-entity-decode.php
 
-When using `decode` you can also use `decode_flags and `decode_encoding` parameters. See options here: http://php.net/manual/en/function.htmlentities.php
+When using `decode` you can also use `decode_flags` and `decode_encoding` parameters.  
+http://php.net/manual/en/function.htmlentities.php
 
-When using `specialchars` you can also use `specialchars_flags` and `specialchars_encoding` parameters. See options here: http://php.net/manual/en/function.htmlspecialchars.php
+When using `specialchars` you can also use `specialchars_flags` and `specialchars_encoding` parameters.  
+http://php.net/manual/en/function.htmlspecialchars.php
 
 Example:
 
