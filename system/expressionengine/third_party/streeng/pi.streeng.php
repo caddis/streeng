@@ -109,6 +109,8 @@ class Streeng
 
 		if ($url === 'yes') {
 			$string = urlencode($string);
+		} elseif ($url === 'raw') {
+			$string = rawurlencode($string);
 		}
 
 		// HTML encode

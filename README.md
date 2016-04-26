@@ -1,4 +1,4 @@
-# Streeng 1.9.0
+# Streeng 1.10.0
 
 Perform common operations on strings such as changing case, truncating, finding/replacing, repeating, encoding/decoding, generating slugs, and more.
 
@@ -13,7 +13,7 @@ explode="|" - string to split find/replace parameters with
 trim="left" - left, right, or both (default = "both")
 encode="yes" - HTML encode the string (default = "no")
 decode="yes" - HTML decode the string (default = "no")
-url="yes" - URL encode the string (default = "no")
+url="yes" - URL encode the string (default = "no", set to "raw" for raw encoding)
 capitalize="yes" - capitalize the first character of the string (default = "no")
 title="yes" - capitalize the first character of every word (default = "no")
 lower="yes" - convert the string to lower case (default = "no")

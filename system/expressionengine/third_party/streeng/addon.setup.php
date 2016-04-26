@@ -6,7 +6,7 @@ if (! defined('STREENG_AUTHOR')) {
 	define('STREENG_DESC', 'Perform common operations on strings.');
 	define('STREENG_DOCS_URL', 'https://github.com/caddis/streeng');
 	define('STREENG_NAME', 'Streeng');
-	define('STREENG_VER', '1.9.0');
+	define('STREENG_VER', '1.10.0');
 }
 
 return array(
